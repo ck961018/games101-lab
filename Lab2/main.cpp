@@ -5,7 +5,7 @@
 #include "global.hpp"
 #include "Triangle.hpp"
 
-constexpr double MY_PI = 3.1415926;
+constexpr double M_PI = 3.1415926;
 
 Eigen::Matrix4f get_view_matrix(Eigen::Vector3f eye_pos) {
     Eigen::Matrix4f view = Eigen::Matrix4f::Identity();

@@ -22,6 +22,9 @@ class Texture {
   int width, height;
 
   Eigen::Vector3f getColor(float u, float v) {
+    if (u <= 0 || u >= 1 || v <= 0 || v >= 1) {
+      return Eigen::Vector3f(0, 0, 0);
+    }
     u = std::fmin(1, std::fmax(u, 0));
     v = std::fmin(1, std::fmax(v, 0));
     auto u_img = u * width;

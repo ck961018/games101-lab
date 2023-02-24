@@ -31,7 +31,7 @@ void Renderer::Render(const Scene &scene) {
   int spp = 32;
   std::cout << "SPP: " << spp << "\n";
 
-  auto num_threads = 8;
+  const int num_threads = 8;
   std::thread threads[num_threads];
   auto thread_height = scene.height / num_threads;
 
@@ -39,8 +39,7 @@ void Renderer::Render(const Scene &scene) {
     for (uint32_t j = start_height; j < end_height; ++j) {
       for (uint32_t i = 0; i < scene.width; ++i) {
         // generate primary ray direction
-        float x =
-            (2 * (i + 0.5) / (float)scene.width - 1) * imageAspectRatio * scale;
+        float x = (2 * (i + 0.5) / (float)scene.width - 1) * imageAspectRatio * scale;
         float y = (1 - 2 * (j + 0.5) / (float)scene.height) * scale;
 
         Vector3f dir = normalize(Vector3f(-x, y, 1));
@@ -57,8 +56,7 @@ void Renderer::Render(const Scene &scene) {
   };
 
   for (size_t t = 0; t < num_threads; t++) {
-    threads[t] =
-        std::thread(renderRow, t * thread_height, (t + 1) * thread_height);
+    threads[t] = std::thread(renderRow, t * thread_height, (t + 1) * thread_height);
   }
 
   for (size_t t = 0; t < num_threads; t++) {
@@ -71,12 +69,9 @@ void Renderer::Render(const Scene &scene) {
   (void)fprintf(fp, "P6\n%d %d\n255\n", scene.width, scene.height);
   for (auto i = 0; i < scene.height * scene.width; ++i) {
     static unsigned char color[3];
-    color[0] =
-        (unsigned char)(255 * std::pow(clamp(0, 1, framebuffer[i].x), 0.6f));
-    color[1] =
-        (unsigned char)(255 * std::pow(clamp(0, 1, framebuffer[i].y), 0.6f));
-    color[2] =
-        (unsigned char)(255 * std::pow(clamp(0, 1, framebuffer[i].z), 0.6f));
+    color[0] = (unsigned char)(255 * std::pow(clamp(0, 1, framebuffer[i].x), 0.6f));
+    color[1] = (unsigned char)(255 * std::pow(clamp(0, 1, framebuffer[i].y), 0.6f));
+    color[2] = (unsigned char)(255 * std::pow(clamp(0, 1, framebuffer[i].z), 0.6f));
     fwrite(color, 1, 3, fp);
   }
   fclose(fp);
